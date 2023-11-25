@@ -1,0 +1,36 @@
+﻿@model Student
+@{
+    ViewData["Title"] = "ConfirmEnrollment";
+}
+
+<section class="page-wrapper">
+    <div class="row">
+        <div class="col-12">
+            <h1>Confirmation Response</h1>
+            <p><strong>You have been invited to enroll in the "COURSE NAME coming from email reply"</strong></p>
+            <p>
+                Hey "STUDENT NAME", you have been invited to enroll in the "COURSE NAME" in "ROOM" starting on "COURSE START DATE"
+                with instructor "COURSE INSTRUCTOR" - we would be thrilled to have you join us, but we need to ask you to confirm
+                your enrollment!
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <form asp-controller="Students" asp-action="ConfirmEnrollment" method="post">
+                <p>
+                    Do you want to enroll?
+                    <input type="radio" name="EnrollmentReply" value="Yes" />
+                    <label for="">Yes</label>
+                    <input type="radio" name="EnrollmentReply" value="No" />
+                    <label for="">No</label>
+                    
+                    <input type="hidden" asp-for="StudentId" />
+                    <button type="submit" class="btn btn-primary">Submit response</button>
+                </p>
+            </form>
+        </div>
+    </div>
+</section>
+

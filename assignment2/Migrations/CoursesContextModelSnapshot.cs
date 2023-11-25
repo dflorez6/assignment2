@@ -129,7 +129,7 @@ namespace assignment2.Migrations
                         .IsRequired();
 
                     b.HasOne("assignment2.Models.Status", "Status")
-                        .WithMany()
+                        .WithMany("Students")
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -137,6 +137,11 @@ namespace assignment2.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("Status");
+                });
+
+            modelBuilder.Entity("assignment2.Models.Status", b =>
+                {
+                    b.Navigation("Students");
                 });
 #pragma warning restore 612, 618
         }

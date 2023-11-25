@@ -27,6 +27,11 @@ namespace assignment2.Controllers
         [HttpPost]
         public IActionResult AddStudent(Student student)
         {
+            // TODO: 
+            // 1. Send a confirmation Flash Message (TempData) when student was successfully added to DB
+            // 2. Fix validations, instead of returning the view, try to use TempData to pass ModelState errors to the
+            // Manage view somehow
+
             // Checks for Model validations
             if (ModelState.IsValid)
             {
@@ -40,6 +45,35 @@ namespace assignment2.Controllers
                 // If validations don't pass
                 return View();
             }
+        }
+
+        [HttpGet]
+        public IActionResult ConfirmEnrollment()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ConfirmEnrollment(Student student, string EnrollmentReply)
+        {
+            Console.WriteLine("Confirm Enrollment");
+            // Check student's reply
+            if (EnrollmentReply == "Yes")
+            {
+                // TODO: Make a conditional to update
+                // context.Students.Update(student); // Updates record in DB
+                return RedirectToAction("ConfirmationSuccess", "Students");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        [HttpGet]
+        public IActionResult ConfirmationSuccess()
+        {
+            return View();
         }
 
     }

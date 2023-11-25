@@ -45,19 +45,8 @@ namespace assignment2.Models
         public Course Course { get; set; }
 
         //====================
-        // Constructor
-        //====================
-        /*
-        // Default
-        public Student() { }
-
-        // Non-Default
-        public Student(string name, string email, int courseId) { 
-            Name = name;
-            Email = email;
-            CourseId = courseId;
-        }
-        */
+        // Method
+        //====================        
 
     }
 }

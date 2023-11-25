@@ -8,6 +8,7 @@
 @{
     ViewData["Title"] = "Manage";
     ViewData["CourseId"] = Model.CourseId;
+    string statusName = string.Empty;   
 }
 
 <section class="page-wrapper">
@@ -25,6 +26,13 @@
                 The course <strong>@Model.Name</strong> is in room <strong>@Model.Room</strong> starting on
                 <strong>@Model.Start.ToString("MM/dd/yyyy")</strong>  and the instructor is <strong>@Model.Instructor</strong>
             </p>
+
+            <p>
+                <span class="me-3">Invites not sent: #</span>
+                <span class="me-3">Sent count: #</span>
+                <span class="me-3">Confirmed count: #</span>
+                <span class="me-3">Declined count: #</span>
+            </p>
         </div>
     </div>
 
@@ -32,7 +40,7 @@
         <div class="col-12">
             <p><strong>Students:</strong></p>
 
-            @if(ViewBag.CourseStudents.Count == 0)
+            @if (ViewBag.CourseStudents.Count == 0)
             {
                 <p>No students yet - you should add some!</p>
             }
@@ -52,7 +60,22 @@
                             <tr>
                                 <td>@student.Name</td>
                                 <td>@student.Email</td>
-                                <td>@student.StatusId</td>
+                                @switch (@student.StatusId)
+                                {
+                                    case "ConfirmationMessageSent":
+                                        statusName = "Confirmation Message Sent";
+                                        break;
+                                    case "EnrollmentConfirmed":
+                                        statusName = "Enrollment Confirmed";
+                                        break;
+                                    case "EnrollmentDeclined":
+                                        statusName = "Enrollment Declined";
+                                        break;
+                                    default:
+                                        statusName = "Confirmation Message Not Sent";
+                                        break;
+                                }
+                                <td>@statusName</td>
                             </tr>
                         }
                     </tbody>
@@ -68,8 +91,8 @@
         <div class="col-12">
             <p><strong>Actions:</strong></p>
             <p>
-                <!-- TODO: Create SENND CONFIRMATION MESSAGES METHOD -->
-                <form asp-action="">
+                <form asp-controller="Courses" asp-action="SendConfirmationMessages" method="post">
+                    <input type="hidden" name="CourseId" value="@Model.CourseId" />
                     <button type="submit" class="btn btn-primary">Send confirmation messages</button>
                 </form>
             </p>

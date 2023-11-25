@@ -7,6 +7,8 @@
 using assignment2.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
+using System.Net.Mail;
 using NuGet.Protocol.Core.Types;
 using System.Diagnostics.Metrics;
 
@@ -83,7 +85,7 @@ namespace assignment2.Controllers
         public IActionResult Manage(int id)
         {
             var course = context.Courses.Find(id);
-            
+
             // Getting all the students that belong to a specific course
             ViewBag.CourseStudents = context.Students
                 .Include(s => s.Course)
@@ -93,59 +95,72 @@ namespace assignment2.Controllers
             return View(course);
         }
 
-        /*
         [HttpPost]
-        public IActionResult AddStudent(CourseStudentViewModel viewModel)
+        public IActionResult SendConfirmationMessages(string CourseId)
         {
 
-            var student = new Student(viewModel.Student.Name, viewModel.Student.Email, viewModel.Course.CourseId);
+            // TODO: 
+            // 1. Send a confirmation Flash Message (TempData) when SendConfirmationMessages was successful
 
-            // Checks for Model validations
-            if (ModelState.IsValid)
+            // Get a list of all the students in the course with status == ConfirmationMessageNotSent
+            var studentsConfirmationNotSent = context.Students
+                .Include(s => s.Course)
+                .Where(s => s.CourseId == int.Parse(CourseId))
+                .Where(s => s.StatusId == "ConfirmationMessageNotSent")
+                .OrderBy(c => c.Name).ToList();
+
+            Console.WriteLine("SendConfirmationMessages");
+            // Iterates over the list of students that belong to the course and have status == ConfirmationMessageNotSent
+            foreach (var student in studentsConfirmationNotSent)
             {
-                Console.WriteLine("Passes Validations");
+                // Sends email
+                SendEmail(student.Email, student);
 
-                // If validations pass
-                context.Students.Add(student); // Inserts new record into DB
-                context.SaveChanges();                
-                return RedirectToAction("Manage", "Courses", new { id = viewModel.Course.CourseId });
-            }
-            else
-            {
-                Console.WriteLine("Doesnt pass Validations");
-                // Log validation errors to the console
-                foreach (var key in ModelState.Keys)
-                {
-                    var errors = ModelState[key].Errors;
-                    if (errors.Count > 0)
-                    {
-                        Console.WriteLine($"Validation errors for property {key}: {string.Join(", ", errors.Select(e => e.ErrorMessage))}");
-                    }
-                }
+                // TODO: Change the student status to ConfirmationMessageSent
+                // update student status here
 
-                // If validations don't pass
-                return RedirectToAction("Manage", "Courses", new { id = viewModel.Course.CourseId });
             }
+
+
+
+
+
+
+
+            return RedirectToAction("Manage", "Courses", new { id = CourseId });
         }
-        */
 
+        // Methods
+        public void SendEmail(string toAddress, Student student)
+        {
+            // Send Email to Students
+            string fromAddress = "dflorez6.dev@gmail.com";
+            // string toAddress = "dflorez6@gmail.com";
+            string gmailAppPassword = "gibf edsp estc fisv "; // TODO: Remember to delete this once the assignment is graded
+
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential(fromAddress, gmailAppPassword),
+                EnableSsl = true,
+            };
+            
+            var mailMessage = new MailMessage()
+            {
+                From = new MailAddress(fromAddress),
+                Subject = "A test of emailing from C#",
+                Body = $"<h1>Hello {student.Name}</h1>" + 
+                $"<p>Your request to enroll in the course {student.Course.Name} in {student.Course.Room} starting {student.Course.Start.ToString("MM/dd/yyyy")} with instructor {student.Course.Instructor}.</p>" +
+                $"<p>We are pleased to have you in the course if you could <a href='https://localhost:7031/Students/ConfirmEnrollment?courseId={student.CourseId}'>confirm your enrollment</a> as soon as possible that would be appreciate it!</p>" +
+                $"<p>Sincerely,</p>" +
+                $"<p>The Course Manager App</p>",
+                IsBodyHtml = true
+            };
+
+            mailMessage.To.Add(toAddress);
+
+            smtpClient.SendAsync(mailMessage, null);
+        }
 
     }
 }
-
-// TODO: VALIDATIONS
-/*
-
-To check validations
-if (!ModelState.IsValid)
-{
-    // Model is not valid, handle the validation errors
-    return View(model);
-}
-
-// Model is valid, continue with your processing
-
-return RedirectToAction("Success");
-
-
-*/

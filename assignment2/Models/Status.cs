@@ -19,6 +19,8 @@ namespace assignment2.Models
         [Required(ErrorMessage = "Status name cannot be blank.")]
         public string StatusName { get; set; }
 
+        public ICollection<Student> Students { get; set; }
+
         //====================
         // Methods
         //====================
