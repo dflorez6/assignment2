@@ -41,13 +41,15 @@
                     </tr>
                 </thead>
                 <tbody>
-
+                    @foreach (Student student in ViewBag.CourseStudents)
+                    {
+                        // TODO: CREATE AN IF ELSE TO DISPLAY WHEN NO STUDENTS ARE IN THE COURSE
                         <tr>
-                            <td>test</td>
-                            <td>test</td>
-                            <td>test</td>
+                            <td>@student.Name</td>
+                            <td>@student.Email</td>
+                            <td>@student.StatusId</td>
                         </tr>
-                    
+                    }
                 </tbody>
             </table>
         </div>

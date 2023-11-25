@@ -83,24 +83,14 @@ namespace assignment2.Controllers
         public IActionResult Manage(int id)
         {
             var course = context.Courses.Find(id);
-
-            /*
-            var viewModel = new CourseStudentViewModel
-            {
-                Course = course,
-                Student = new Student()
-            };
-            */
-
-            /*
-             * Students that belong to a course
-            var students = context.Students
-                .Include(c = c.Course)
+            
+            // Getting all the students that belong to a specific course
+            ViewBag.CourseStudents = context.Students
+                .Include(s => s.Course)
+                .Where(s => s.CourseId == id)
                 .OrderBy(c => c.Name).ToList();
-            */
 
             return View(course);
-            // return View(viewModel);
         }
 
         /*
