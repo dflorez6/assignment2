@@ -1,0 +1,82 @@
+﻿<!--  Manage.cshtml
+    Assignment 2
+
+    Revision History
+    David Florez ID: 8820815, 2023.11.24: Created
+-->
+
+@{
+    ViewData["Title"] = "Manage";
+}
+
+<section class="page-wrapper">
+    <div class="row">
+        <div class="col-12">
+            <h1>Manage your course</h1>
+            <p>
+                <a asp-controller="Courses" asp-action="Index">All courses</a> |
+                <a asp-controller="Courses" asp-action="Edit">Edit this course</a> |
+                <a asp-controller="Courses" asp-action="Add">Add new course</a>
+            </p>
+
+            <p><strong>Course Summary:</strong></p>
+            <p>
+                The course "COURSE NAME" is in room "ROOM NUMBER" starting on "COURSE START" (1/18/2024) and the instructor is "INSTRUCTOR"
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <p><strong>Students:</strong></p>
+
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Enrollment Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>test</td>
+                        <td>test</td>
+                        <td>test</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <p><strong>Actions:</strong></p>
+            <p>
+                <!-- TODO: Create SENND CONFIRMATION MESSAGES METHOD -->
+                <form asp-action="">
+                    <div class="">
+                        <label for="">Name</label>
+                        <input class="form-contr" />
+                        <label for="">Email</label>
+                        <input class="form-contr" />
+                        <button type="submit" class="btn btn-primary">Create Student</button>
+                    </div>                    
+                </form>
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <p><strong>Actions:</strong></p>
+            <p>
+                <!-- TODO: Create SENND CONFIRMATION MESSAGES METHOD -->
+                <form asp-action="">
+                    <button type="submit" class="btn btn-primary">Send confirmation messages</button>
+                </form>
+            </p>
+        </div>
+    </div>
+</section>
+

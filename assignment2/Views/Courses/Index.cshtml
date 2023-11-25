@@ -1,0 +1,57 @@
+﻿<!--  Index.cshtml
+    Assignment 2
+
+    Revision History
+    David Florez ID: 8820815, 2023.11.24: Created
+-->
+@model IEnumerable<Course>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<section class="page-wrapper">
+    <div class="row">
+        <div class="col-12">
+            <h1>All my courses</h1>
+            <p>
+                <a asp-controller="Courses" asp-action="Add" class="">
+                    Add a new course
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Instructor</th>
+                        <th>Start date</th>
+                        <th>Room #</th>
+                        <th>Students #</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (Course course in Model)
+                    {
+                        <tr>
+                            <td>@course.Name</td>
+                            <td>@course.Instructor</td>
+                            <td>@course.Start.ToString("dd/MM/yyyy")</td>
+                            <td>@course.Name</td>
+                            <td>Student Count</td>
+                            <td>
+                                <a asp-controller="Courses" asp-action="Manage">Manage</a> | 
+                                <a asp-controller="Courses" asp-action="Edit" asp-route-id="@course.CourseId">Edit</a>
+                                </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
