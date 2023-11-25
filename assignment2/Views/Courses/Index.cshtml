@@ -40,11 +40,11 @@
                         <tr>
                             <td>@course.Name</td>
                             <td>@course.Instructor</td>
-                            <td>@course.Start.ToString("dd/MM/yyyy")</td>
-                            <td>@course.Name</td>
+                            <td>@course.Start.ToString("MM/dd/yyyy")</td>
+                            <td>@course.Room</td>
                             <td>Student Count</td>
                             <td>
-                                <a asp-controller="Courses" asp-action="Manage">Manage</a> | 
+                                <a asp-controller="Courses" asp-action="Manage" asp-route-id="@course.CourseId">Manage</a> |
                                 <a asp-controller="Courses" asp-action="Edit" asp-route-id="@course.CourseId">Edit</a>
                                 </td>
                         </tr>

@@ -4,9 +4,10 @@
     Revision History
     David Florez ID: 8820815, 2023.11.24: Created
 -->
-
+@model Course
 @{
     ViewData["Title"] = "Manage";
+    ViewData["CourseId"] = Model.CourseId;
 }
 
 <section class="page-wrapper">
@@ -15,13 +16,14 @@
             <h1>Manage your course</h1>
             <p>
                 <a asp-controller="Courses" asp-action="Index">All courses</a> |
-                <a asp-controller="Courses" asp-action="Edit">Edit this course</a> |
+                <a asp-controller="Courses" asp-action="Edit" asp-route-id="@Model.CourseId">Edit this course</a> |
                 <a asp-controller="Courses" asp-action="Add">Add new course</a>
             </p>
 
             <p><strong>Course Summary:</strong></p>
             <p>
-                The course "COURSE NAME" is in room "ROOM NUMBER" starting on "COURSE START" (1/18/2024) and the instructor is "INSTRUCTOR"
+                The course <strong>@Model.Name</strong> is in room <strong>@Model.Room</strong> starting on
+                <strong>@Model.Start.ToString("MM/dd/yyyy")</strong>  and the instructor is <strong>@Model.Instructor</strong>
             </p>
         </div>
     </div>
@@ -39,11 +41,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>test</td>
-                        <td>test</td>
-                        <td>test</td>
-                    </tr>
+
+                        <tr>
+                            <td>test</td>
+                            <td>test</td>
+                            <td>test</td>
+                        </tr>
+                    
                 </tbody>
             </table>
         </div>
@@ -51,19 +55,33 @@
 
     <div class="row">
         <div class="col-12">
-            <p><strong>Actions:</strong></p>
-            <p>
-                <!-- TODO: Create SENND CONFIRMATION MESSAGES METHOD -->
-                <form asp-action="">
-                    <div class="">
-                        <label for="">Name</label>
-                        <input class="form-contr" />
-                        <label for="">Email</label>
-                        <input class="form-contr" />
-                        <button type="submit" class="btn btn-primary">Create Student</button>
-                    </div>                    
-                </form>
-            </p>
+            <p><strong>Students:</strong></p>
+
+            <partial name="~/Views/Students/AddStudent.cshtml" model="new Student()"></partial>
+            <!--
+            <form class="form-wrapper" asp-action="AddStudent" method="post">
+                <!-- Validation Error Messages -->
+            <!--
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="">
+                    <label asp-for="Student.Name">
+                        Name
+                        <input asp-for="Student.Name" class="form-contr" required />
+                        <span asp-validation-for="Student.Name"></span>
+                    </label>
+                    <label asp-for="Student.Email">
+                        Email
+                        <input asp-for="Student.Email" class="form-contr" required />
+                        <span asp-validation-for="Student.Email"></span>
+                    </label>
+
+                    <input type="hidden" asp-for="Course.CourseId" />
+
+                    <button type="submit" class="btn btn-primary">Create Student</button>
+                </div>
+            </form>
+            -->
         </div>
     </div>
 

@@ -44,7 +44,7 @@ namespace assignment2.Controllers
                 // If validations pass
                 context.Courses.Add(course); // Inserts new record into DB
                 context.SaveChanges();
-                return RedirectToAction("Index", "Courses");
+                return RedirectToAction("Manage", "Courses", new { id = course.CourseId });
             }
             else
             {
@@ -70,7 +70,7 @@ namespace assignment2.Controllers
                 // If validations pass
                 context.Courses.Update(course); // Updates record in DB
                 context.SaveChanges();
-                return RedirectToAction("Index", "Courses");
+                return RedirectToAction("Manage", "Courses", new { id = course.CourseId });
             }
             else
             {
@@ -78,10 +78,19 @@ namespace assignment2.Controllers
                 return View(course);
             }
         }
-                
+
         [HttpGet]
-        public IActionResult Manage()
+        public IActionResult Manage(int id)
         {
+            var course = context.Courses.Find(id);
+
+            /*
+            var viewModel = new CourseStudentViewModel
+            {
+                Course = course,
+                Student = new Student()
+            };
+            */
 
             /*
              * Students that belong to a course
@@ -90,8 +99,46 @@ namespace assignment2.Controllers
                 .OrderBy(c => c.Name).ToList();
             */
 
-            return View();
+            return View(course);
+            // return View(viewModel);
         }
+
+        /*
+        [HttpPost]
+        public IActionResult AddStudent(CourseStudentViewModel viewModel)
+        {
+
+            var student = new Student(viewModel.Student.Name, viewModel.Student.Email, viewModel.Course.CourseId);
+
+            // Checks for Model validations
+            if (ModelState.IsValid)
+            {
+                Console.WriteLine("Passes Validations");
+
+                // If validations pass
+                context.Students.Add(student); // Inserts new record into DB
+                context.SaveChanges();                
+                return RedirectToAction("Manage", "Courses", new { id = viewModel.Course.CourseId });
+            }
+            else
+            {
+                Console.WriteLine("Doesnt pass Validations");
+                // Log validation errors to the console
+                foreach (var key in ModelState.Keys)
+                {
+                    var errors = ModelState[key].Errors;
+                    if (errors.Count > 0)
+                    {
+                        Console.WriteLine($"Validation errors for property {key}: {string.Join(", ", errors.Select(e => e.ErrorMessage))}");
+                    }
+                }
+
+                // If validations don't pass
+                return RedirectToAction("Manage", "Courses", new { id = viewModel.Course.CourseId });
+            }
+        }
+        */
+
 
     }
 }

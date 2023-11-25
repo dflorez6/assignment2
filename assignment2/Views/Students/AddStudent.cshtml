@@ -1,0 +1,25 @@
+﻿@model Student
+<!-- Partial View -->
+<form class="form-wrapper" asp-controller="Students" asp-action="AddStudent" method="post">
+    <!-- Validation Error Messages -->
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="">
+        <label asp-for="Name">
+            Name
+            <input asp-for="Name" class="form-contr" />
+            <span asp-validation-for="Name"></span>
+        </label>
+        <label asp-for="Email">
+            Email
+            <input asp-for="Email" class="form-contr" />
+            <span asp-validation-for="Email"></span>
+        </label>
+
+        <input type="hidden" asp-for="CourseId" value="@ViewData["CourseId"]" />
+        <input type="hidden" asp-for="StatusId" value="ConfirmationMessageNotSent" />
+
+        <button type="submit" class="btn btn-primary">Create Student</button>
+    </div>
+</form>
+

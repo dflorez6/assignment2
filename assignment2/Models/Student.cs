@@ -28,7 +28,9 @@ namespace assignment2.Models
         // Associations
         //====================
         // Foreign Key
-        [Required(ErrorMessage = "Status cannot be blank.")]
+        // Since I decided to use an actual entity to hold the values, and by design, a default status has been set on CoursesContext,
+        // I removed the required annotation from this class in order to prevent failing ModelState Validations
+        [ValidateNever]
         public string StatusId { get; set; }
         // Navigation property
         [ValidateNever] // We need to stop vaidation here
@@ -43,8 +45,19 @@ namespace assignment2.Models
         public Course Course { get; set; }
 
         //====================
-        // Methods
+        // Constructor
         //====================
+        /*
+        // Default
+        public Student() { }
+
+        // Non-Default
+        public Student(string name, string email, int courseId) { 
+            Name = name;
+            Email = email;
+            CourseId = courseId;
+        }
+        */
 
     }
 }
