@@ -7,10 +7,10 @@
     <div class="row">
         <div class="col-12">
             <h1>Confirmation Response</h1>
-            <p><strong>You have been invited to enroll in the "COURSE NAME coming from email reply"</strong></p>
+            <p><strong>You have been invited to enroll in the @ViewBag.StudentCourse.Name</strong></p>
             <p>
-                Hey "STUDENT NAME", you have been invited to enroll in the "COURSE NAME" in "ROOM" starting on "COURSE START DATE"
-                with instructor "COURSE INSTRUCTOR" - we would be thrilled to have you join us, but we need to ask you to confirm
+                Hey @Model.Name, you have been invited to enroll in the @ViewBag.StudentCourse.Name in @ViewBag.StudentCourse.Room starting on @ViewBag.StudentCourse.Start.ToString("dd/MM/yyyy")
+                with instructor @ViewBag.StudentCourse.Instructor - we would be thrilled to have you join us, but we need to ask you to confirm
                 your enrollment!
             </p>
         </div>
@@ -26,7 +26,8 @@
                     <input type="radio" name="EnrollmentReply" value="No" />
                     <label for="">No</label>
                     
-                    <input type="hidden" asp-for="StudentId" />
+                    <input type="hidden" name="StudentId" value="@Model.StudentId" />
+                    <input type="hidden" name="CourseId" value="@ViewBag.StudentCourse.CourseId" />
                     <button type="submit" class="btn btn-primary">Submit response</button>
                 </p>
             </form>

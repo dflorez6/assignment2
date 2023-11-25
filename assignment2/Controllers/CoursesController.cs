@@ -92,14 +92,31 @@ namespace assignment2.Controllers
                 .Where(s => s.CourseId == id)
                 .OrderBy(c => c.Name).ToList();
 
+            // Counters
+            ViewBag.InvitesNotSent = context.Students
+                .Include(s => s.Course)
+                .Where(s => s.CourseId == id)
+                .Where(s => s.StatusId == "ConfirmationMessageNotSent").Count();
+            ViewBag.InvitesSent = context.Students
+                .Include(s => s.Course)
+                .Where(s => s.CourseId == id)
+                .Where(s => s.StatusId == "ConfirmationMessageSent").Count();
+            ViewBag.InvitesConfirmed = context.Students
+                .Include(s => s.Course)
+                .Where(s => s.CourseId == id)
+                .Where(s => s.StatusId == "EnrollmentConfirmed").Count();
+            ViewBag.InvitesDeclined = context.Students
+                .Include(s => s.Course)
+                .Where(s => s.CourseId == id)
+                .Where(s => s.StatusId == "EnrollmentDeclined").Count();
+
             return View(course);
         }
 
         [HttpPost]
         public IActionResult SendConfirmationMessages(string CourseId)
         {
-
-            // TODO: 
+            // TODO: If theres time
             // 1. Send a confirmation Flash Message (TempData) when SendConfirmationMessages was successful
 
             // Get a list of all the students in the course with status == ConfirmationMessageNotSent
@@ -116,16 +133,11 @@ namespace assignment2.Controllers
                 // Sends email
                 SendEmail(student.Email, student);
 
-                // TODO: Change the student status to ConfirmationMessageSent
-                // update student status here
-
+                // Update student(s) status to ConfirmationMessageSent
+                student.StatusId = "ConfirmationMessageSent";
+                context.Students.Update(student); // Updates record in DB
+                context.SaveChanges();
             }
-
-
-
-
-
-
 
             return RedirectToAction("Manage", "Courses", new { id = CourseId });
         }
@@ -135,7 +147,6 @@ namespace assignment2.Controllers
         {
             // Send Email to Students
             string fromAddress = "dflorez6.dev@gmail.com";
-            // string toAddress = "dflorez6@gmail.com";
             string gmailAppPassword = "gibf edsp estc fisv "; // TODO: Remember to delete this once the assignment is graded
 
             var smtpClient = new SmtpClient("smtp.gmail.com")
@@ -151,7 +162,7 @@ namespace assignment2.Controllers
                 Subject = "A test of emailing from C#",
                 Body = $"<h1>Hello {student.Name}</h1>" + 
                 $"<p>Your request to enroll in the course {student.Course.Name} in {student.Course.Room} starting {student.Course.Start.ToString("MM/dd/yyyy")} with instructor {student.Course.Instructor}.</p>" +
-                $"<p>We are pleased to have you in the course if you could <a href='https://localhost:7031/Students/ConfirmEnrollment?courseId={student.CourseId}'>confirm your enrollment</a> as soon as possible that would be appreciate it!</p>" +
+                $"<p>We are pleased to have you in the course if you could <a href='https://localhost:7031/Students/ConfirmEnrollment/{student.StudentId}'>confirm your enrollment</a> as soon as possible that would be appreciate it!</p>" +
                 $"<p>Sincerely,</p>" +
                 $"<p>The Course Manager App</p>",
                 IsBodyHtml = true

@@ -48,24 +48,35 @@ namespace assignment2.Controllers
         }
 
         [HttpGet]
-        public IActionResult ConfirmEnrollment()
+        public IActionResult ConfirmEnrollment(int id)
         {
-            return View();
+            var student = context.Students.Find(id);
+            ViewBag.StudentCourse = context.Courses.Find(student.CourseId);
+            return View(student);
         }
 
         [HttpPost]
-        public IActionResult ConfirmEnrollment(Student student, string EnrollmentReply)
+        public IActionResult ConfirmEnrollment(string EnrollmentReply, int StudentId, int CourseId)
         {
-            Console.WriteLine("Confirm Enrollment");
+            var student = context.Students.Find(StudentId);
+
             // Check student's reply
             if (EnrollmentReply == "Yes")
             {
-                // TODO: Make a conditional to update
-                // context.Students.Update(student); // Updates record in DB
+                // Replied "Yes"
+                student.StatusId = "EnrollmentConfirmed";
+                context.Students.Update(student); // Updates record in DB
+                context.SaveChanges();
+
                 return RedirectToAction("ConfirmationSuccess", "Students");
             }
             else
             {
+                // Replied "No"
+                student.StatusId = "EnrollmentDeclined";
+                context.Students.Update(student); // Updates record in DB
+                context.SaveChanges();
+
                 return RedirectToAction("Index", "Home");
             }
         }
