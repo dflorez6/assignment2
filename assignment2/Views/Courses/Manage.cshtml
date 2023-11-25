@@ -32,60 +32,37 @@
         <div class="col-12">
             <p><strong>Students:</strong></p>
 
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Enrollment Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (Student student in ViewBag.CourseStudents)
-                    {
-                        // TODO: CREATE AN IF ELSE TO DISPLAY WHEN NO STUDENTS ARE IN THE COURSE
+            @if(ViewBag.CourseStudents.Count == 0)
+            {
+                <p>No students yet - you should add some!</p>
+            }
+            else
+            {
+                <table class="table table-bordered table-striped">
+                    <thead>
                         <tr>
-                            <td>@student.Name</td>
-                            <td>@student.Email</td>
-                            <td>@student.StatusId</td>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Enrollment Status</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-12">
-            <p><strong>Students:</strong></p>
+                    </thead>
+                    <tbody>
+                        @foreach (Student student in ViewBag.CourseStudents)
+                        {
+                            <tr>
+                                <td>@student.Name</td>
+                                <td>@student.Email</td>
+                                <td>@student.StatusId</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
 
             <partial name="~/Views/Students/AddStudent.cshtml" model="new Student()"></partial>
-            <!--
-            <form class="form-wrapper" asp-action="AddStudent" method="post">
-                <!-- Validation Error Messages -->
-            <!--
-                <div asp-validation-summary="All" class="text-danger"></div>
-
-                <div class="">
-                    <label asp-for="Student.Name">
-                        Name
-                        <input asp-for="Student.Name" class="form-contr" required />
-                        <span asp-validation-for="Student.Name"></span>
-                    </label>
-                    <label asp-for="Student.Email">
-                        Email
-                        <input asp-for="Student.Email" class="form-contr" required />
-                        <span asp-validation-for="Student.Email"></span>
-                    </label>
-
-                    <input type="hidden" asp-for="Course.CourseId" />
-
-                    <button type="submit" class="btn btn-primary">Create Student</button>
-                </div>
-            </form>
-            -->
         </div>
     </div>
+
 
     <div class="row">
         <div class="col-12">
