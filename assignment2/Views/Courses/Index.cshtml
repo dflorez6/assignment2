@@ -42,11 +42,13 @@
                             <td>@course.Instructor</td>
                             <td>@course.Start.ToString("MM/dd/yyyy")</td>
                             <td>@course.Room</td>
-                            <td>Student Count</td>
+                            <td>
+                                @course.Students.Count
+                            </td>
                             <td>
                                 <a asp-controller="Courses" asp-action="Manage" asp-route-id="@course.CourseId">Manage</a> |
                                 <a asp-controller="Courses" asp-action="Edit" asp-route-id="@course.CourseId">Edit</a>
-                                </td>
+                            </td>
                         </tr>
                     }
                 </tbody>

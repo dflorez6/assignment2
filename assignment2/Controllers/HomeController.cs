@@ -12,15 +12,29 @@ namespace assignment2.Controllers
 {
     public class HomeController : Controller
     {
-        // DB Context
-        private CoursesContext context { get; set; }
-        public HomeController(CoursesContext ctx) => context = ctx;
+        // Cookies
+        private readonly AppCookies _cookiesContext;
+
+        // Constructor
+        public HomeController(AppCookies cookiesContext)
+        {
+            _cookiesContext = cookiesContext; // Cookies
+        }
 
         //====================
         // Actions
         //====================    
         public IActionResult Index()
         {
+            // Set a cookie
+            var cookie = _cookiesContext.ReturnCookie();
+
+            // Checks if the cookie was not set, before setting up the vlaue
+            if (string.IsNullOrEmpty(cookie))
+            {
+                _cookiesContext.SetCookie(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"), 90);
+            }
+
             return View();
         }
 

@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject AppCookies CookieContext
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -39,6 +41,15 @@
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2023 - assignment2 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            - 
+            @if (CookieContext.ReturnCookie() == null)
+            {
+                <span>Hey Welcome to the Course Manager App</span>
+            }
+            else
+            {
+                <span>Welcome back! You first used this app on: @CookieContext.ReturnCookie()</span>
+            }            
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

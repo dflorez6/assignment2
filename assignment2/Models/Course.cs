@@ -30,9 +30,8 @@ namespace assignment2.Models
         [RegularExpression(@"^[\d][a-zA-Z][\d]{2}$", ErrorMessage = "Room is not in the correct format (e.g. 3G19)")]
         public string Room { get; set; }
 
-        //====================
-        // Methods
-        //====================
+        // Used to calculate student count per course
+        public ICollection<Student> Students { get; set; }
 
     }
 }

@@ -27,7 +27,7 @@ namespace assignment2.Controllers
         public IActionResult Index()
         {
             // Retrieves "all" records from DB
-            var courses = context.Courses.OrderByDescending(c => c.Start).ToList();
+            var courses = context.Courses.Include(c => c.Students).OrderByDescending(c => c.Start).ToList();
             return View(courses);
         }
 
@@ -116,9 +116,6 @@ namespace assignment2.Controllers
         [HttpPost]
         public IActionResult SendConfirmationMessages(string CourseId)
         {
-            // TODO: If theres time
-            // 1. Send a confirmation Flash Message (TempData) when SendConfirmationMessages was successful
-
             // Get a list of all the students in the course with status == ConfirmationMessageNotSent
             var studentsConfirmationNotSent = context.Students
                 .Include(s => s.Course)
@@ -159,7 +156,7 @@ namespace assignment2.Controllers
             var mailMessage = new MailMessage()
             {
                 From = new MailAddress(fromAddress),
-                Subject = "A test of emailing from C#",
+                Subject = $"Enrollment confirmation for the '{student.Course.Name}' course required",
                 Body = $"<h1>Hello {student.Name}</h1>" + 
                 $"<p>Your request to enroll in the course {student.Course.Name} in {student.Course.Room} starting {student.Course.Start.ToString("MM/dd/yyyy")} with instructor {student.Course.Instructor}.</p>" +
                 $"<p>We are pleased to have you in the course if you could <a href='https://localhost:7031/Students/ConfirmEnrollment/{student.StudentId}'>confirm your enrollment</a> as soon as possible that would be appreciate it!</p>" +

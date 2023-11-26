@@ -18,6 +18,10 @@ builder.Services.AddDbContext<CoursesContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("CoursesContext")    
 ));
 
+// Cookies
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<AppCookies>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
